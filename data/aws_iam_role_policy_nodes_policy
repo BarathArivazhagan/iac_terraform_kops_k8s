@@ -19,7 +19,7 @@
         "s3:ListBucket"
       ],
       "Resource": [
-        "arn:aws:s3:::kops-us-east-1-barath-bucket"
+        "*"
       ]
     },
     {
@@ -28,15 +28,7 @@
         "s3:Get*"
       ],
       "Resource": [
-        "arn:aws:s3:::kops-us-east-1-barath-bucket/demo.k8s.local/addons/*",
-        "arn:aws:s3:::kops-us-east-1-barath-bucket/demo.k8s.local/cluster.spec",
-        "arn:aws:s3:::kops-us-east-1-barath-bucket/demo.k8s.local/config",
-        "arn:aws:s3:::kops-us-east-1-barath-bucket/demo.k8s.local/instancegroup/*",
-        "arn:aws:s3:::kops-us-east-1-barath-bucket/demo.k8s.local/pki/issued/*",
-        "arn:aws:s3:::kops-us-east-1-barath-bucket/demo.k8s.local/pki/private/kube-proxy/*",
-        "arn:aws:s3:::kops-us-east-1-barath-bucket/demo.k8s.local/pki/private/kubelet/*",
-        "arn:aws:s3:::kops-us-east-1-barath-bucket/demo.k8s.local/pki/ssh/*",
-        "arn:aws:s3:::kops-us-east-1-barath-bucket/demo.k8s.local/secrets/dockerconfig"
+       "*"
       ]
     },
     {
