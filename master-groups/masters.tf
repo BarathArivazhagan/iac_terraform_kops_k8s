@@ -8,7 +8,7 @@ resource "aws_launch_configuration" "master_launch_configuration" {
   iam_instance_profile        = aws_iam_instance_profile.masters_instance_profile.id
   security_groups             = [var.master_security_group_id]
   associate_public_ip_address = true
-  user_data                   = file("../data/aws_launch_configuration_master_user_data")
+  user_data                   = file("data/aws_launch_configuration_master_user_data")
 
   root_block_device  {
     volume_type           = "gp2"
@@ -50,7 +50,7 @@ resource "aws_autoscaling_attachment" "master_autoscaling_attachment" {
 
 resource "aws_key_pair" "k8s_key_pair" {
   key_name   = var.key_name
-  public_key = file("../data/aws_key_pair_kubernetes_public_key")
+  public_key = file("../")
 }
 
 resource "aws_elb" "master_k8s_api" {

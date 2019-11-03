@@ -6,7 +6,7 @@ resource "aws_launch_configuration" "nodes_launch_configuration" {
   iam_instance_profile        = aws_iam_instance_profile.nodes_iam_instance_profile.id
   security_groups             = [var.nodes_security_group_id]
   associate_public_ip_address = true
-  user_data                   = file("../data/aws_launch_configuration_nodes_user_data")
+  user_data                   = file("data/aws_launch_configuration_nodes_user_data")
 
   root_block_device = {
     volume_type           = "gp2"
