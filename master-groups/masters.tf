@@ -2,7 +2,7 @@
 data "template_file" "master_user_data" {
   template = file("templates/aws_launch_configuration_master_user_data.tpl")
 
-  vars {
+  vars = {
     cluster_name = var.cluster_name
     bucket_name = var.bucket_name
   }
