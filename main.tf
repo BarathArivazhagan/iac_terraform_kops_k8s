@@ -30,7 +30,7 @@ module "master_groups" {
   key_name = var.key_name
   master_volume_size = var.master_volume_size
   public_subnets = module.vpc.public_subnets
-
+  master_azs = module.vpc.public_subnets_azs
 }
 
 module "node_groups" {

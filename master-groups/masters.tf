@@ -86,7 +86,7 @@ resource "aws_elb" "master_k8s_api" {
 }
 
 resource "aws_ebs_volume" "a_etcd_events" {
-  availability_zone = aws_autoscaling_group.master_autoscaling_group.availability_zones[0]
+  availability_zone = var.master_azs[0]
   size              = 20
   type              = "gp2"
   encrypted         = false
@@ -101,7 +101,7 @@ resource "aws_ebs_volume" "a_etcd_events" {
 }
 
 resource "aws_ebs_volume" "a_etcd_main" {
-  availability_zone = aws_autoscaling_group.master_autoscaling_group.availability_zones[0]
+  availability_zone = var.master_azs[0]
   size              = 20
   type              = "gp2"
   encrypted         = false

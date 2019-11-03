@@ -15,3 +15,7 @@ variable "elb_security_group_id" {}
 variable "public_subnets" {
   type = list(string)
 }
+
+variable "master_azs" {
+  type = list(string)
+}
