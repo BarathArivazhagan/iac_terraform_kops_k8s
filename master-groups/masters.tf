@@ -8,15 +8,15 @@ resource "aws_launch_configuration" "master_launch_configuration" {
   iam_instance_profile        = aws_iam_instance_profile.masters_instance_profile.id
   security_groups             = [var.master_security_group_id]
   associate_public_ip_address = true
-  user_data                   = file("${path.root}/data/aws_launch_configuration_master_user_data")
+  user_data                   = file("../data/aws_launch_configuration_master_user_data")
 
-  root_block_device = {
+  root_block_device  {
     volume_type           = "gp2"
     volume_size           = var.master_volume_size
     delete_on_termination = true
   }
 
-  lifecycle = {
+  lifecycle {
     create_before_destroy = true
   }
 
@@ -50,13 +50,13 @@ resource "aws_autoscaling_attachment" "master_autoscaling_attachment" {
 
 resource "aws_key_pair" "k8s_key_pair" {
   key_name   = var.key_name
-  public_key = file("${path.root}/data/aws_key_pair_kubernetes_public_key")
+  public_key = file("../data/aws_key_pair_kubernetes_public_key")
 }
 
 resource "aws_elb" "master_k8s_api" {
   name = join("-",[var.stack_name,"elb",var.cluster_name])
 
-  listener = {
+  listener  {
     instance_port     = 443
     instance_protocol = "TCP"
     lb_port           = 443
@@ -66,7 +66,7 @@ resource "aws_elb" "master_k8s_api" {
   security_groups = [var.elb_security_group_id]
   subnets         = var.public_subnets
 
-  health_check = {
+  health_check  {
     target              = "SSL:443"
     healthy_threshold   = 2
     unhealthy_threshold = 2
