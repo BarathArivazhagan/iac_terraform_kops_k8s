@@ -113,7 +113,7 @@ resource "aws_ebs_volume" "a_etcd_events" {
 
   tags = {
     KubernetesCluster                      = var.cluster_name
-    Name                                   = join("-",[var.stack_name,"etcd"])
+    Name                                   = join("-",["a.etcd-events",var.cluster_name])
     "k8s.io/etcd/events"                   = "a/a"
     "k8s.io/role/master"                   = "1"
     "kubernetes.io/cluster/demo.k8s.local" = "owned"
@@ -128,21 +128,12 @@ resource "aws_ebs_volume" "a_etcd_main" {
 
   tags = {
     KubernetesCluster                      = var.cluster_name
-    Name                                   = join("-",[var.stack_name,"etcd-main"])
+    Name                                   = join("-",["a.etcd-main",var.cluster_name])
     "k8s.io/etcd/main"                     = "a/a"
     "k8s.io/role/master"                   = "1"
     "kubernetes.io/cluster/demo.k8s.local" = "owned"
   }
 }
 
-//resource "aws_volume_attachment" "etcd_events_ebs_attachment" {
-//  device_name = "/dev/sde"
-//  instance_id = aws_launch_configuration.master_launch_configuration.
-//  volume_id = aws_ebs_volume.a_etcd_events.id
-//}
-//
-//resource "aws_volume_attachment" "etcd_main_ebs_attachment" {
-//  device_name = "/dev/sde"
-//  instance_id = aws_autoscaling_group.master_autoscaling_group.in
-//  volume_id = aws_ebs_volume.a_etcd_main.id
-//}
+
+

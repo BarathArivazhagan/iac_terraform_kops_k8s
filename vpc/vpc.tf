@@ -122,6 +122,20 @@ resource "aws_route" "nat_gateway_route" {
   nat_gateway_id = aws_nat_gateway.nat_gateway[0].id
 }
 
+resource "aws_vpc_dhcp_options" "k8s_vpc_dhcp" {
+  domain_name         = "ec2.internal"
+  domain_name_servers = ["AmazonProvidedDNS"]
 
+  tags = {
+    KubernetesCluster                             = var.cluster_name
+    Name                                          = var.cluster_name
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+  }
+}
+
+resource "aws_vpc_dhcp_options_association" "k8s_vpc_dhcp_association" {
+  vpc_id          =  aws_vpc.k8s_vpc.id
+  dhcp_options_id =  aws_vpc_dhcp_options.k8s_vpc_dhcp.id
+}
 
 
