@@ -8,13 +8,13 @@ resource "aws_launch_configuration" "nodes_launch_configuration" {
   associate_public_ip_address = true
   user_data                   = file("data/aws_launch_configuration_nodes_user_data")
 
-  root_block_device = {
+  root_block_device  {
     volume_type           = "gp2"
     volume_size           = var.nodes_volume_size
     delete_on_termination = true
   }
 
-  lifecycle = {
+  lifecycle {
     create_before_destroy = true
   }
 

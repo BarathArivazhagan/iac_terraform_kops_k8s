@@ -1,7 +1,7 @@
 
 resource "aws_iam_role" "masters_iam_role" {
   name               = join("-",[var.stack_name,"masters-iam-role"])
-  assume_role_policy = file("data/aws_iam_role_policy")
+  assume_role_policy = file("data/aws_iam_role_masters_policy")
 }
 
 

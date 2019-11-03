@@ -50,7 +50,7 @@ resource "aws_autoscaling_attachment" "master_autoscaling_attachment" {
 
 resource "aws_key_pair" "k8s_key_pair" {
   key_name   = var.key_name
-  public_key = file("../")
+  public_key = file("data/aws_key_pair_kubernetes_public_key")
 }
 
 resource "aws_elb" "master_k8s_api" {
