@@ -30,12 +30,32 @@ resource "aws_autoscaling_group" "master_autoscaling_group" {
   min_size             = 1
   vpc_zone_identifier  = [var.master_subnet_id]
 
+
   tags = [
     {
-      Name = join("-",[var.stack_name, "master"])
-    }]
+      key                 = "KubernetesCluster"
+      value               =  join("-",var.cluster_name)
+      propagate_at_launch = true
+    }, {
+      key                 = "Name"
+      value               = join("-","master",var.cluster_name)
+      propagate_at_launch = true
+    }, {
+      key                 = "k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup"
+      value               = "master"
+      propagate_at_launch = true
+    }, {
+      key                 = "k8s.io/role/node"
+      value               = "1"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "kops.k8s.io/instancegroup"
+      value               = "master"
+      propagate_at_launch = true
+    }
 
-
+  ]
 
 
   metrics_granularity = "1Minute"
@@ -89,6 +109,7 @@ resource "aws_ebs_volume" "a_etcd_events" {
   size              = 20
   type              = "gp2"
   encrypted         = false
+
 
   tags = {
     KubernetesCluster                      = var.cluster_name

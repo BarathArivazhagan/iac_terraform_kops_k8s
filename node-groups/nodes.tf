@@ -29,11 +29,32 @@ resource "aws_autoscaling_group" "nodes_asg" {
   min_size             = 2
   vpc_zone_identifier  = var.nodes_subnets
 
+
   tags = [
     {
-      Name = join("-", [var.stack_name,"nodes"])
-    }]
+      key                 = "KubernetesCluster"
+      value               =  join("-",var.cluster_name)
+      propagate_at_launch = true
+    }, {
+      key                 = "Name"
+      value               = join("-","nodes",var.cluster_name)
+      propagate_at_launch = true
+    }, {
+      key                 = "k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup"
+      value               = "nodes"
+      propagate_at_launch = true
+    }, {
+      key                 = "k8s.io/role/node"
+      value               = "1"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "kops.k8s.io/instancegroup"
+      value               = "nodes"
+      propagate_at_launch = true
+    }
 
+  ]
   metrics_granularity = "1Minute"
   enabled_metrics     = ["GroupDesiredCapacity", "GroupInServiceInstances", "GroupMaxSize", "GroupMinSize", "GroupPendingInstances", "GroupStandbyInstances", "GroupTerminatingInstances", "GroupTotalInstances"]
 }
