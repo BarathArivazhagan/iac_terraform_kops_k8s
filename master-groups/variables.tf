@@ -19,5 +19,3 @@ variable "public_subnets" {
 variable "master_azs" {
   type = list(string)
 }
-
-variable "bucket_name" {}

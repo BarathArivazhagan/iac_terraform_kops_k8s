@@ -23,5 +23,3 @@ variable "master_volume_size" {}
 variable "cluster_topology" {
   default = "public"
 }
-
-variable "bucket_name" {}
