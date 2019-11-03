@@ -17,3 +17,4 @@ variable "nodes_volume_size" {
 variable "nodes_subnets" {
   type = list(string)
 }
+
