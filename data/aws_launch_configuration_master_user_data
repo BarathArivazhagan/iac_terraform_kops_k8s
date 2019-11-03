@@ -139,6 +139,8 @@ ensure-install-dir
 
 cat > cluster_spec.yaml << '__EOF_CLUSTER_SPEC'
 cloudConfig: null
+kubeDNS:
+  provider: CoreDNS
 docker:
   ipMasq: false
   ipTables: false
