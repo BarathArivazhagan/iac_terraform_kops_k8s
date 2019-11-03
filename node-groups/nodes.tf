@@ -33,11 +33,11 @@ resource "aws_autoscaling_group" "nodes_asg" {
   tags = [
     {
       key                 = "KubernetesCluster"
-      value               =  join("-",var.cluster_name)
+      value               =  join("-",[var.cluster_name])
       propagate_at_launch = true
     }, {
       key                 = "Name"
-      value               = join("-","nodes",var.cluster_name)
+      value               = join("-",["nodes",var.cluster_name])
       propagate_at_launch = true
     }, {
       key                 = "k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup"
