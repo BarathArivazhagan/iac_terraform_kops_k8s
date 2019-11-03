@@ -30,11 +30,11 @@ resource "aws_autoscaling_group" "nodes_asg" {
   vpc_zone_identifier  = var.nodes_subnets
 
   tag = {
-    "KubernetesCluster" = var.cluster_name
-    "Name" = join("-",[var.stack_name,"nodes"])
-    "k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup" = "nodes"
-    "k8s.io/role/node" = "1"
-    "kops.k8s.io/instancegroup" = "nodes"
+     KubernetesCluster = var.cluster_name
+     Name = join("-",[var.stack_name,"nodes"])
+     k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup = "nodes"
+     k8s.io/role/node = "1"
+     kops.k8s.io/instancegroup = "nodes"
 
   }
 

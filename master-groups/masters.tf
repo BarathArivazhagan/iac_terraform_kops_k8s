@@ -33,9 +33,9 @@ resource "aws_autoscaling_group" "master_autoscaling_group" {
   tags = {
     KubernetesCluster = var.cluster_name
     Name = join("-",[var.stack_name,"master"])
-    "k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup" = join("-",[var.stack_name,"master"])
-    "k8s.io/role/master" = "1"
-    "kops.k8s.io/instancegroup" = join("-",[var.stack_name,"master"])
+    k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup = join("-",[var.stack_name,"master"])
+    k8s.io/role/master = "1"
+    kops.k8s.io/instancegroup = join("-",[var.stack_name,"master"])
   }
 
   metrics_granularity = "1Minute"
