@@ -135,4 +135,14 @@ resource "aws_ebs_volume" "a_etcd_main" {
   }
 }
 
-
+//resource "aws_volume_attachment" "etcd_events_ebs_attachment" {
+//  device_name = "/dev/sde"
+//  instance_id = aws_launch_configuration.master_launch_configuration.
+//  volume_id = aws_ebs_volume.a_etcd_events.id
+//}
+//
+//resource "aws_volume_attachment" "etcd_main_ebs_attachment" {
+//  device_name = "/dev/sde"
+//  instance_id = aws_autoscaling_group.master_autoscaling_group.in
+//  volume_id = aws_ebs_volume.a_etcd_main.id
+//}

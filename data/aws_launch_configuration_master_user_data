@@ -17,6 +17,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+
 NODEUP_URL=https://artifacts.k8s.io/binaries/kops/1.15.0-beta.1/linux/amd64/nodeup,https://github.com/kubernetes/kops/releases/download/1.15.0-beta.1/linux-amd64-nodeup,https://kubeupv2.s3.amazonaws.com/kops/1.15.0-beta.1/linux/amd64/nodeup
 NODEUP_HASH=98d9bbaa7389f4391f981f12d2ed95105f2b2b75981c3288626bd15622d1573f
 
