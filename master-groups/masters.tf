@@ -55,7 +55,7 @@ resource "aws_key_pair" "k8s_key_pair" {
 }
 
 resource "aws_elb" "master_k8s_api" {
-  name = join("-",[var.stack_name,"elb",var.cluster_name])
+  name = join("-",[var.stack_name,"elb"])
 
   listener  {
     instance_port     = 443
