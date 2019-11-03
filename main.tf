@@ -24,7 +24,6 @@ module "master_groups" {
   source = "./master-groups"
   cluster_name = var.cluster_name
   stack_name = var.stack_name
-  bucket_name = var.bucket_name
   elb_security_group_id = module.security_groups.elb_master_security_group_id
   master_security_group_id = module.security_groups.master_security_group_id
   master_subnet_id = element(module.vpc.public_subnets,0 )
@@ -38,7 +37,6 @@ module "node_groups" {
   source = "./node-groups"
   cluster_name = var.cluster_name
   stack_name = var.stack_name
-  bucket_name = var.bucket_name
   key_name = var.key_name
   nodes_security_group_id = module.security_groups.nodes_security_group_id
   nodes_subnets = var.cluster_topology == "public "? module.vpc.public_subnets : module.vpc.private_subnets
