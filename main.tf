@@ -31,6 +31,7 @@ module "master_groups" {
   master_volume_size = var.master_volume_size
   public_subnets = module.vpc.public_subnets
   master_azs = module.vpc.public_subnets_azs
+  bucket_name = var.bucket_name
 }
 
 module "node_groups" {

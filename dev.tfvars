@@ -7,3 +7,4 @@ vpc_cidr_block = "10.0.0.0/16"
 nat_enabled = false
 master_volume_size = 64
 key_name = "barath_k8s_key"
+bucket_name = "kops-us-east-1-barath-bucket"

@@ -18,3 +18,4 @@ variable "nodes_subnets" {
   type = list(string)
 }
 
+variable "bucket_name" {}

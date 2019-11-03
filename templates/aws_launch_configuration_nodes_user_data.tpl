@@ -110,6 +110,7 @@ function try-download-release() {
     local -r nodeup_hash=$(cat nodeup.sha256)
   fi
 
+  # shellcheck disable=SC2145
   echo "Downloading nodeup (${nodeup_urls[@]})"
   download-or-bust nodeup "${nodeup_hash}" "${nodeup_urls[@]}"
 
@@ -187,14 +188,14 @@ Assets:
 - ada48ed9160f83bda949546fd2c7e443b97a5212c4f99148d66866c65ceb9dab@https://storage.googleapis.com/kubernetes-release/release/v1.15.4/bin/linux/amd64/kubectl
 - 3ca15c0a18ee830520cf3a95408be826cbd255a1535a38e0be9608b25ad8bf64@https://storage.googleapis.com/kubernetes-release/network-plugins/cni-plugins-amd64-v0.7.5.tgz
 - af89c1d1a4ed0328ec4bf534f0919de3fc00706d9bf227ff89fe7c748e6e6cd6@https://artifacts.k8s.io/binaries/kops/1.15.0-beta.1/linux/amd64/utils.tar.gz,https://github.com/kubernetes/kops/releases/download/1.15.0-beta.1/linux-amd64-utils.tar.gz,https://kubeupv2.s3.amazonaws.com/kops/1.15.0-beta.1/linux/amd64/utils.tar.gz
-ClusterName: demo.k8s.local
-ConfigBase: s3://kops-us-east-1-barath-bucket/demo.k8s.local
+ClusterName: ${var.cluster_name}
+ConfigBase: s3://${var.bucket_name}/${var.cluster_name}
 InstanceGroupName: nodes
 Tags:
 - _automatic_upgrades
 - _aws
 channels:
-- s3://kops-us-east-1-barath-bucket/demo.k8s.local/addons/bootstrap-channel.yaml
+- s3://${var.bucket_name}/${var.cluster_name}/addons/bootstrap-channel.yaml
 protokubeImage:
   hash: 44a8a85e5f2bd31c52e1232670107bbb3a720b8ff1602ed3e24b1e4e56cb03af
   name: protokube:1.15.0-beta.1
