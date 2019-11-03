@@ -30,11 +30,14 @@ resource "aws_autoscaling_group" "master_autoscaling_group" {
   min_size             = 1
   vpc_zone_identifier  = [var.master_subnet_id]
 
-  tags = list(map( "KubernetesCluster",var.cluster_name,
-  "Name" , join("-",[var.stack_name,"master"]),
-  "k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup", join("-",[var.stack_name,"master"]),
-  "k8s.io/role/master", "1",
-  "kops.k8s.io/instancegroup", join("-",[var.stack_name,"master"])))
+  tags = [
+    {
+      KubernetesCluster =   var.cluster_name,
+      Name = join("-",[var.stack_name, "master"])
+      k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup = join("-", [var.stack_name,"master"])
+      k8s.io/role/master = "1"
+      kops.k8s.io/instancegroup =  join("-", [var.stack_name, "master"])
+    }]
 
 
 
