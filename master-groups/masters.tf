@@ -32,7 +32,6 @@ resource "aws_autoscaling_group" "master_autoscaling_group" {
 
   tags = [
     {
-      KubernetesCluster =   var.cluster_name,
       Name = join("-",[var.stack_name, "master"])
     }]
 

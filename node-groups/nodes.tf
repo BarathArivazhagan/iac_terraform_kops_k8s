@@ -31,7 +31,6 @@ resource "aws_autoscaling_group" "nodes_asg" {
 
   tags = [
     {
-      KubernetesCluster = var.cluster_name
       Name = join("-", [var.stack_name,"nodes"])
     }]
 
