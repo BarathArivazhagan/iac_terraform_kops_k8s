@@ -110,6 +110,7 @@ function try-download-release() {
     local -r nodeup_hash=$(cat nodeup.sha256)
   fi
 
+  # shellcheck disable=SC2145
   echo "Downloading nodeup (${nodeup_urls[@]})"
   download-or-bust nodeup "${nodeup_hash}" "${nodeup_urls[@]}"
 

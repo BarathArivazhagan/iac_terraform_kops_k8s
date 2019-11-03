@@ -39,5 +39,5 @@ module "node_groups" {
   stack_name = var.stack_name
   key_name = var.key_name
   nodes_security_group_id = module.security_groups.nodes_security_group_id
-  nodes_subnets = var.cluster_topology == "public "? module.vpc.public_subnets : module.vpc.private_subnets
+  nodes_subnets = var.cluster_topology == "public" ? module.vpc.public_subnets : module.vpc.private_subnets
 }
