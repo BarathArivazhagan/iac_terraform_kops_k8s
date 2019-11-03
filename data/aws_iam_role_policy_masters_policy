@@ -178,6 +178,13 @@
       "Resource": [
         "*"
       ]
+    },{
+       "Effect": "Allow",
+       "Action": [
+           "route53:*",
+           "route53domains:*"
+        ],
+       "Resource": "*"
     }
   ]
 }

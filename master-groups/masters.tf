@@ -116,7 +116,7 @@ resource "aws_ebs_volume" "a_etcd_events" {
     Name                                   = join("-",["a.etcd-events",var.cluster_name])
     "k8s.io/etcd/events"                   = "a/a"
     "k8s.io/role/master"                   = "1"
-    "kubernetes.io/cluster/demo.k8s.local" = "owned"
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   }
 }
 
@@ -131,7 +131,7 @@ resource "aws_ebs_volume" "a_etcd_main" {
     Name                                   = join("-",["a.etcd-main",var.cluster_name])
     "k8s.io/etcd/main"                     = "a/a"
     "k8s.io/role/master"                   = "1"
-    "kubernetes.io/cluster/demo.k8s.local" = "owned"
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   }
 }
 
