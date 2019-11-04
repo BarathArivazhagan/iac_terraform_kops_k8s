@@ -81,9 +81,6 @@ resource "aws_lb" "master_k8s_api" {
 
   name = join("-",[var.stack_name,"elb"])
   load_balancer_type = "network"
-
-
-  security_groups = [var.elb_security_group_id]
   subnets         = var.public_subnets
   enable_deletion_protection = false
   enable_cross_zone_load_balancing = true
