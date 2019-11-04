@@ -110,8 +110,6 @@ resource "aws_lb_target_group" "alb_target_group" {
   target_type = "instance"
   vpc_id   =  var.vpc_id
   health_check  {
-    protocol = "TCP"
-    port = "443"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 10
