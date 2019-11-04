@@ -75,8 +75,8 @@ resource "aws_key_pair" "k8s_key_pair" {
 
 resource "aws_lb" "master_k8s_api" {
 
-  name = join("-",[var.stack_name,"alb"])
-  load_balancer_type = "application"
+  name = join("-",[var.stack_name,"elb"])
+  load_balancer_type = "network"
 
 
   security_groups = [var.elb_security_group_id]
@@ -87,26 +87,26 @@ resource "aws_lb" "master_k8s_api" {
 
   tags = {
     KubernetesCluster                      = var.cluster_name
-    Name                                   = join("-",[var.stack_name,"alb"])
+    Name                                   = join("-",[var.stack_name,"elb"])
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   }
 }
 
-resource "aws_lb_listener" "alb_listener" {
+resource "aws_lb_listener" "elb_listener" {
   load_balancer_arn = aws_lb.master_k8s_api.arn
   port              = "443"
-  protocol          = "HTTPS"
+  protocol          = "TCP"
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.alb_target_group.arn
+    target_group_arn = aws_lb_target_group.elb_target_group.arn
   }
 }
 
 
-resource "aws_lb_target_group" "alb_target_group" {
+resource "aws_lb_target_group" "elb_target_group" {
   name     = "${var.stack_name}-lb-tg"
   port     = 443
-  protocol = "HTTPS"
+  protocol = "TCP"
   target_type = "instance"
   vpc_id   =  var.vpc_id
   health_check  {

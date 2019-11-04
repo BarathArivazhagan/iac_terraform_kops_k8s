@@ -45,8 +45,8 @@ module "node_groups" {
 
 module "route53" {
   source = "./route53"
-  alb_name = module.master_groups.alb_dns_name
-  alb_zone_id = module.master_groups.alb_zone_id
+  elb_name = module.master_groups.elb_dns_name
+  elb_zone_id = module.master_groups.elb_zone_id
   route53_zone_id = var.route53_zone_id
   api_server_route_name = var.api_server_route_name
 
