@@ -8,4 +8,4 @@ nat_enabled = false
 master_volume_size = 64
 key_name = "barath_k8s_key"
 route53_zone_id="Z35CHBMLOTDXJ9"
-api_server_route_name ="dev.barath-devops.com"
+api_server_route_name ="api.dev.barath-devops.com"

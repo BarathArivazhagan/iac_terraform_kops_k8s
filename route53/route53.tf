@@ -5,6 +5,6 @@ resource "aws_route53_record" "k8s_api_server_record" {
   alias {
     name                   =  var.alb_name
     zone_id                =  var.alb_zone_id
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }

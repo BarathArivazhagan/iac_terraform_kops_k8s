@@ -95,7 +95,7 @@ resource "aws_lb" "master_k8s_api" {
 resource "aws_lb_listener" "alb_listener" {
   load_balancer_arn = aws_lb.master_k8s_api.arn
   port              = "443"
-  protocol          = "TCP"
+  protocol          = "HTTPS"
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.alb_target_group.arn
