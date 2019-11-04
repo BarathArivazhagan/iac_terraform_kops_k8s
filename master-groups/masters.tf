@@ -8,7 +8,11 @@ resource "aws_launch_configuration" "master_launch_configuration" {
   iam_instance_profile        = aws_iam_instance_profile.masters_instance_profile.id
   security_groups             = [var.master_security_group_id]
   associate_public_ip_address = true
-  user_data                   = file("data/aws_launch_configuration_master_user_data")
+  user_data                   = templatefile("./templates/kops/aws_launch_configuration_master_user_data.tmpl",{
+    cluster_name = var.cluster_name
+    bucket_name = var.bucket_name
+
+  })
 
   root_block_device  {
     volume_type           = "gp2"

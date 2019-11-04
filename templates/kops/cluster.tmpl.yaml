@@ -1,0 +1,199 @@
+---
+apiVersion: kops.k8s.io/v1alpha2
+kind: Cluster
+metadata:
+  name: {{.cluster}}.{{.dnsZone}}
+spec:
+  api:
+    loadBalancer:
+      type: Public
+  authorization:
+    rbac: {}
+  channel: stable
+  cloudProvider: aws
+  clusterDNSDomain: cluster.local
+  configBase: s3://{{.bucket}}/{{.cluster}}.{{.dnsZone}}
+  configStore: s3://{{.bucket}}/{{.cluster}}.{{.dnsZone}}
+  docker:
+    ipMasq: false
+    ipTables: false
+    logDriver: json-file
+    logLevel: warn
+    logOpt:
+    - max-size=10m
+    - max-file=5
+    storage: overlay2,overlay,aufs
+    version: 18.06.3
+  etcdClusters:
+  - etcdMembers:
+    {{range $i, $subnet := .publicSubnets}}
+    - instanceGroup: master-{{$subnet.zone}}
+      name: master-{{$subnet.zone}}
+    {{end}}
+    image: k8s.gcr.io/etcd:3.2.24
+    name: main
+    provider: Legacy
+    version: 3.2.24
+  - etcdMembers:
+    {{range $i, $subnet := .publicSubnets}}
+    - instanceGroup: master-{{$subnet.zone}}
+      name: master-{{$subnet.zone}}
+    {{end}}
+    image: k8s.gcr.io/etcd:3.2.24
+    name: events
+    provider: Legacy
+    version: 3.2.24
+  iam:
+    allowContainerRegistry: true
+    legacy: false
+  keyStore: s3://{{.bucket}}/{{.cluster}}.{{.dnsZone}}/pki
+  kubeAPIServer:
+    allowPrivileged: true
+    anonymousAuth: false
+    apiServerCount: 1
+    authorizationMode: RBAC
+    bindAddress: 0.0.0.0
+    cloudProvider: aws
+    enableAdmissionPlugins:
+    - Initializers
+    - NamespaceLifecycle
+    - LimitRanger
+    - ServiceAccount
+    - PersistentVolumeLabel
+    - DefaultStorageClass
+    - DefaultTolerationSeconds
+    - MutatingAdmissionWebhook
+    - ValidatingAdmissionWebhook
+    - NodeRestriction
+    - ResourceQuota
+    etcdQuorumRead: false
+    etcdServers:
+    - http://127.0.0.1:4001
+    etcdServersOverrides:
+    - /events#http://127.0.0.1:4002
+    image: k8s.gcr.io/kube-apiserver:v1.15.4
+    insecureBindAddress: 127.0.0.1
+    insecurePort: 8080
+    kubeletPreferredAddressTypes:
+    - InternalIP
+    - Hostname
+    - ExternalIP
+    logLevel: 2
+    requestheaderAllowedNames:
+    - aggregator
+    requestheaderExtraHeaderPrefixes:
+    - X-Remote-Extra-
+    requestheaderGroupHeaders:
+    - X-Remote-Group
+    requestheaderUsernameHeaders:
+    - X-Remote-User
+    securePort: 443
+    serviceClusterIPRange: 100.64.0.0/13
+    storageBackend: etcd3
+  kubeControllerManager:
+    allocateNodeCIDRs: true
+    attachDetachReconcileSyncPeriod: 1m0s
+    cloudProvider: aws
+    clusterCIDR: 100.96.0.0/11
+    clusterName: {{.cluster}}.{{.dnsZone}}
+    configureCloudRoutes: true
+    image: k8s.gcr.io/kube-controller-manager:v1.15.4
+    leaderElection:
+      leaderElect: true
+    logLevel: 2
+    useServiceAccountCredentials: true
+  kubeDNS:
+    provider: CoreDNS
+    cacheMaxConcurrent: 150
+    cacheMaxSize: 1000
+    domain: cluster.local
+    replicas: 2
+    serverIP: 100.64.0.10
+  kubeProxy:
+    clusterCIDR: 100.96.0.0/11
+    cpuRequest: 100m
+    hostnameOverride: '@aws'
+    image: k8s.gcr.io/kube-proxy:v1.15.4
+    logLevel: 2
+  kubeScheduler:
+    image: k8s.gcr.io/kube-scheduler:v1.15.4
+    leaderElection:
+      leaderElect: true
+    logLevel: 2
+  kubelet:
+    allowPrivileged: true
+    anonymousAuth: false
+    authenticationTokenWebhook: true
+    authorizationMode: Webhook
+    cgroupRoot: /
+    cloudProvider: aws
+    clusterDNS: 100.64.0.10
+    clusterDomain: cluster.local
+    enableDebuggingHandlers: true
+    evictionHard: memory.available<100Mi,nodefs.available<10%,nodefs.inodesFree<5%,imagefs.available<10%,imagefs.inodesFree<5%
+    featureGates:
+      ExperimentalCriticalPodAnnotation: "true"
+    hostnameOverride: '@aws'
+    kubeconfigPath: /var/lib/kubelet/kubeconfig
+    logLevel: 2
+    networkPluginMTU: 9001
+    networkPluginName: cni
+    nonMasqueradeCIDR: 100.64.0.0/10
+    podInfraContainerImage: k8s.gcr.io/pause-amd64:3.0
+    podManifestPath: /etc/kubernetes/manifests
+  kubernetesApiAccess:
+  - 0.0.0.0/0
+  kubernetesVersion: {{.kubernetesVersion}}
+  masterInternalName: api.internal.{{.cluster}}.{{.dnsZone}}
+  masterPublicName: api.{{.cluster}}.{{.dnsZone}}
+  masterKubelet:
+    allowPrivileged: true
+    anonymousAuth: false
+    cgroupRoot: /
+    cloudProvider: aws
+    clusterDNS: 100.64.0.10
+    clusterDomain: cluster.local
+    enableDebuggingHandlers: true
+    evictionHard: memory.available<100Mi,nodefs.available<10%,nodefs.inodesFree<5%,imagefs.available<10%,imagefs.inodesFree<5%
+    featureGates:
+      ExperimentalCriticalPodAnnotation: "true"
+    hostnameOverride: '@aws'
+    kubeconfigPath: /var/lib/kubelet/kubeconfig
+    logLevel: 2
+    networkPluginMTU: 9001
+    networkPluginName: cni
+    nonMasqueradeCIDR: 100.64.0.0/10
+    podInfraContainerImage: k8s.gcr.io/pause-amd64:3.0
+    podManifestPath: /etc/kubernetes/manifests
+    registerSchedulable: false
+  secretStore: s3://{{.bucket}}/{{.cluster}}.{{.dnsZone}}/secrets
+  networkCIDR: {{.vpc.cidr}}
+  networkID: {{.vpc.id}}
+  networking:
+    calico:
+      majorVersion: v3
+      crossSubnet: true
+  nonMasqueradeCIDR: 100.64.0.0/10
+  serviceClusterIPRange: 100.64.0.0/13
+  sshAccess:
+  - 0.0.0.0/0
+  subnets:
+  # Public subnets
+  {{range $i, $subnet := .publicSubnets}}
+  - id:   {{$subnet.id}}
+    name: {{$subnet.name}}
+    type: {{$subnet.type}}
+    zone: {{$subnet.zone}}
+  {{end}}
+  # Private subnets
+  {{range $i, $subnet := .privateSubnets}}
+  - id:   {{$subnet.id}}
+    name: {{$subnet.name}}
+    type: {{$subnet.type}}
+    zone: {{$subnet.zone}}
+  {{end}}
+  topology:
+    dns:
+      type: Public
+    masters: public
+    nodes: public

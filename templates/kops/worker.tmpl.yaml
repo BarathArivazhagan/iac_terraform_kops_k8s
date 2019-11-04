@@ -1,0 +1,30 @@
+# File worker.tmpl.yaml
+apiVersion: kops.k8s.io/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: null
+  labels:
+    kops.k8s.io/cluster: {{.cluster}}.{{.dnsZone}}
+  name: {{.node.role}}
+spec:
+  image: {{.nodeImage}}
+  machineType: {{.node.instanceType}}
+  maxSize: {{.node.maxSize}}
+  minSize: {{.node.minSize}}
+  # Autoscaling group Tags
+  cloudLabels:
+    k8s.io/cluster-autoscaler/{{.cluster}}.{{.dnsZone}}: "true"
+    k8s.io/cluster-autoscaler/enabled: "true"
+    kubernetes.io/cluster/{{.cluster}}.{{.dnsZone}}: owned
+  nodeLabels:
+    kubelet.kubernetes.io/role: {{.node.role}}
+    kops.k8s.io/instancegroup: {{.node.role}}
+  role: Node
+  suspendProcesses:
+  - AZRebalance
+  rootVolumeSize: 50
+  rootVolumeOptimization: true
+  subnets:
+  {{range $i, $subnet := .privateSubnets}}
+  - {{$subnet.name}}
+  {{end}}

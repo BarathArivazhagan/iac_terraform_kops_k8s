@@ -29,3 +29,6 @@ variable "cluster_topology" {
 
 variable "route53_zone_id" {}
 variable "api_server_route_name" {}
+
+
+variable "bucket_name" {}
