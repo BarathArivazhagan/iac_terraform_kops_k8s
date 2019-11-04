@@ -63,7 +63,7 @@ resource "aws_autoscaling_group" "master_autoscaling_group" {
 }
 
 resource "aws_autoscaling_attachment" "master_autoscaling_attachment" {
-    elb                    = aws_elb.master_k8s_api.id
+    //alb_target_group   = aws_alb_target_group.
     autoscaling_group_name = aws_autoscaling_group.master_autoscaling_group.id
 }
 
@@ -73,36 +73,53 @@ resource "aws_key_pair" "k8s_key_pair" {
   public_key = file("data/aws_key_pair_kubernetes_public_key")
 }
 
-resource "aws_elb" "master_k8s_api" {
-  name = join("-",[var.stack_name,"elb"])
+resource "aws_lb" "master_k8s_api" {
 
-  listener  {
-    instance_port     = 443
-    instance_protocol = "TCP"
-    lb_port           = 443
-    lb_protocol       = "TCP"
-  }
+  name = join("-",[var.stack_name,"alb"])
+  load_balancer_type = "application"
+
 
   security_groups = [var.elb_security_group_id]
   subnets         = var.public_subnets
+  enable_deletion_protection = false
+  enable_cross_zone_load_balancing = true
+  idle_timeout              = 300
 
+  tags = {
+    KubernetesCluster                      = var.cluster_name
+    Name                                   = join("-",[var.stack_name,"alb"])
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+  }
+}
+
+resource "aws_lb_listener" "alb_listener" {
+  load_balancer_arn = aws_lb.master_k8s_api.arn
+  port              = "443"
+  protocol          = "TCP"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.alb_target_group.arn
+  }
+}
+
+
+resource "aws_lb_target_group" "alb_target_group" {
+  name     = "${var.stack_name}-lb-tg"
+  port     = 443
+  protocol = "HTTPS"
+  target_type = "instance"
+  vpc_id   =  var.vpc_id
   health_check  {
-    target              = "SSL:443"
+    protocol = "TCP"
+    port = "443"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 10
     timeout             = 5
   }
-
-  cross_zone_load_balancing = false
-  idle_timeout              = 300
-
-  tags = {
-    KubernetesCluster                      = var.cluster_name
-    Name                                   = join("-",[var.stack_name,"elb"])
-    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
-  }
 }
+
+
 
 resource "aws_ebs_volume" "a_etcd_events" {
   availability_zone = var.master_azs[0]

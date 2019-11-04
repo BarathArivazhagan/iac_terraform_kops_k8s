@@ -8,7 +8,7 @@ variable "master_k8s_ami" {
 variable "master_instance_type" {
   default = "t2.micro"
 }
-
+variable "vpc_id" {}
 variable "master_subnet_id" {}
 variable "master_volume_size" {}
 variable "elb_security_group_id" {}

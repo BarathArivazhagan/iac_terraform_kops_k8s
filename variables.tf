@@ -23,3 +23,9 @@ variable "master_volume_size" {}
 variable "cluster_topology" {
   default = "public"
 }
+
+
+### Route53 Module variables
+
+variable "route53_zone_id" {}
+variable "api_server_route_name" {}
