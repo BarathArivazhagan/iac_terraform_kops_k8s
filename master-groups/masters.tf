@@ -113,12 +113,7 @@ resource "aws_lb_target_group" "elb_target_group" {
   protocol = "TCP"
   target_type = "instance"
   vpc_id   =  var.vpc_id
-  health_check  {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    interval            = 10
-    timeout             = 5
-  }
+
 }
 
 
