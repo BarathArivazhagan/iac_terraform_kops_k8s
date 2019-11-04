@@ -38,6 +38,13 @@ data "template_file" "kops_values_file" {
     region = var.region
     private_subnets = join("", data.template_file.private_subnet_map.*.rendered)
     public_subnets = join("", data.template_file.public_subnet_map.*.rendered)
+    master_subnets = templatefile("./templates/kops/subnet.tmpl.yaml", {
+      name = "PrivateSubnet-${count.index}"
+      cidr = lookup(var.public_subnets[0], "cidr_block")
+      id = lookup(var.public_subnets[0], "id")
+      type = "Public"
+      az = lookup(var.private_subnets[0], "availability_zone")
+    })
     worker_node_type = var.worker_node_type
     min_worker_nodes = var.min_worker_nodes
     max_worker_nodes = var.max_worker_nodes

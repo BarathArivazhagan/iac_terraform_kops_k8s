@@ -16,6 +16,9 @@ ${private_subnets}
 publicSubnets:
 ${public_subnets}
 
+masterSubnets:
+${master_subnets}
+
 node:
   instanceType: ${worker_node_type}
   minSize: ${min_worker_nodes}

@@ -26,18 +26,18 @@ spec:
     version: 18.06.3
   etcdClusters:
   - etcdMembers:
-    {{range $i, $subnet := .publicSubnets}}
+    {{range $i, $subnet := .masterSubnets}}
     - instanceGroup: master-{{$subnet.zone}}
-      name: master-{{$subnet.zone}}
+      name: {{$subnet.zone}}
     {{end}}
     image: k8s.gcr.io/etcd:3.2.24
     name: main
     provider: Legacy
     version: 3.2.24
   - etcdMembers:
-    {{range $i, $subnet := .publicSubnets}}
+    {{range $i, $subnet := .masterSubnets}}
     - instanceGroup: master-{{$subnet.zone}}
-      name: master-{{$subnet.zone}}
+      name: {{$subnet.zone}}
     {{end}}
     image: k8s.gcr.io/etcd:3.2.24
     name: events
